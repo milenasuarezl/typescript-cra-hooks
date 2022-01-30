@@ -1,24 +1,81 @@
-import React from 'react';
-import logo from './logo.svg';
+import { ReactElement, ReactNode, useState } from 'react';
 import './App.css';
+
+// Conventional props
+
+/**
+ * Basic function
+ * function Heading ({ title }: {title: string}){
+  return <h3>{title}</h3>
+}*/
+
+// other way to write
+// const HeadingFC: React.FC<{ title: string}> = ({ title }) => <h3>{title}</h3>
+
+const Heading = ({ title }: { title: string}) => {
+  return <h3>{title}</h3>
+}
+
+const HeadingWithContent = ({ children }: { children: ReactNode}): ReactElement | null => {
+  return <p>{children}</p>
+}
+
+// Default props
+const defaultContainerProps = {
+  heading: <strong> Default props</strong>
+}
+
+type ContainerProps = { children: ReactNode } & typeof defaultContainerProps
+
+const Container = ({ 
+  heading, 
+  children, 
+}: ContainerProps): ReactElement | null => {
+  return <div>
+          <h3>{heading}</h3>
+          <p>{children}</p>
+        </div>
+}
+
+Container.defaultProps = defaultContainerProps;
+
+// Functional props
+const TextWithNumber = ({
+  header,
+  children
+} : { header?: (num: number) => ReactNode,
+     children: (num : number) => ReactNode}) => {
+  const [state, setState] = useState<number>(1);
+
+  return (
+    <>
+      { header && <h3>{header?.(state)}</h3> }
+      <div style={{marginBottom: "1rem"}}>
+        {children(state)}
+      </div>
+      <div>
+        <button onClick={() => setState(state + 1) }>Add</button>
+      </div>
+    </>
+  )
+} 
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+     <Heading title={'Conventional Props'}/>
+     <HeadingWithContent>
+       Children as a prop
+     </HeadingWithContent>
+     
+     <Container>
+       Children default prop
+     </Container>
+
+     <Heading title={'Functional Props'}/>
+     <TextWithNumber>
+       {(num: number) => <div>The number is {num}</div>}
+      </TextWithNumber>
     </div>
   );
 }
