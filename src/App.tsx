@@ -60,6 +60,35 @@ const TextWithNumber = ({
   )
 } 
 
+// List
+function FunctionList<ListItem> ({
+  items, 
+  render,
+  } : { 
+    items: ListItem[], 
+    render: (item: ListItem) => ReactNode
+  }) {
+  return <></>
+}
+
+// Extends trick  <ListItem extends unknown>
+const List = <ListItem,>({
+  items, 
+  render,
+} : { 
+  items: ListItem[], 
+  render: (item: ListItem) => ReactNode 
+}) => {
+  return (
+    <ul>
+      { items.map((item, index) => (
+        <li key={index}>{render(item)}</li>
+      ))}
+    </ul>
+  )
+}
+
+
 function App() {
   return (
     <div>
@@ -76,6 +105,12 @@ function App() {
      <TextWithNumber>
        {(num: number) => <div>The number is {num}</div>}
       </TextWithNumber>
+
+      <Heading title={'List <Generics> Props'}/>
+      <List 
+        items={['Sofia', 'Julian', 'Laura']} 
+        render={(item: string) => <span>{item.toLowerCase()}</span>}
+      ></List>
     </div>
   );
 }
