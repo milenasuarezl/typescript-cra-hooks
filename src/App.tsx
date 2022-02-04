@@ -1,4 +1,4 @@
-import { ReactElement, ReactNode, useState } from 'react';
+import React, { ReactElement, ReactNode, useState } from 'react';
 import './App.css';
 
 // Conventional props
@@ -88,6 +88,14 @@ const List = <ListItem,>({
   )
 }
 
+// Class component
+class MyHeader extends React.Component<{title: ReactNode}> {
+  render(): React.ReactNode {
+      return (
+        <h1>{this.props.title}</h1>
+      )
+  }
+}
 
 function App() {
   return (
@@ -111,6 +119,9 @@ function App() {
         items={['Sofia', 'Julian', 'Laura']} 
         render={(item: string) => <span>{item.toLowerCase()}</span>}
       ></List>
+
+      <MyHeader title='Jelou'></MyHeader>
+
     </div>
   );
 }
